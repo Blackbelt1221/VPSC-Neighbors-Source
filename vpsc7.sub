@@ -3456,6 +3456,10 @@ C ***************************************************************************
         WTOT=WGT(KGX)*WAUX(0)
       
         IF(NNEIGH.GT.0) THEN
+		
+		OPEN(24, FILE='WTFISGOINGON.OUT', STATUS='UNKNOWN')
+			WRITE(24, *) IOPTION
+		CLOSE(24)
       
           IF(IOPTION.EQ.0) THEN             ! PICK NEIGHBOURS AT RANDOM
             DO I=1,NNEIGH
@@ -3609,9 +3613,9 @@ C            CLOSE(UNIT=22)
               NEIGH(I,KGX)=INT(RAND*NGR(NPH)+1)
               WTOT=WTOT+WGT(NEIGH(I,KGX))*WAUX(I)
             ENDDO
-C            OPEN(22, FILE='NEIGH.OUT',STATUS='UNKNOWN') 
-C            WRITE(22,'(2I8)') (NEIGH)	
-C            CLOSE(UNIT=22)			
+             OPEN(22, FILE='NEIGH.OUT',STATUS='UNKNOWN') 
+             WRITE(22,'(2I8)') (NEIGH)	
+             CLOSE(UNIT=22)			
           ENDIF      
         
         ENDIF   ! if nneigh.gt.0
@@ -3642,13 +3646,13 @@ C     WRITE NEIGBOR LIST TO FILE
       
       CLOSE(UNIT=21)
       
-      OPEN(22, FILE='WNEIGH.OUT',STATUS='UNKNOWN')
+      OPEN(24, FILE='WNEIGH.OUT',STATUS='UNKNOWN')
 	  
 	  DO I=0,NGR(1)-1
-		WRITE(22,'(7F8.4)') (WNEIGH(J,I),J=0,NNEIGH)
+		WRITE(24,'(7F8.4)') (WNEIGH(J,I),J=0,NNEIGH)
 	  ENDDO
 	  
-	  CLOSE(UNIT=22)
+	  CLOSE(UNIT=24)
 	  
       
       END
@@ -8504,7 +8508,7 @@ C     IOPTION=0 --> RANDOM PAIRING / IOPTION=1 --> SEQUENTIAL PAIRING
 C     IOPTION=2 --> MICROTEXTURE CLUSTERING
 C     IOPTION=3 --> IMPORT NEIGHBOR LIST
 
-      IOPTION=0
+      IOPTION=3
 C --> NEED TO REVISE CG MODEL ALGORITHMS
 C     IF(IHARDLAW.EQ.2) IOPTION=1
       CALL NEIGHBOURS (IOPTION)
